@@ -1,0 +1,17 @@
+body {
+  background: yellow;
+}
+
+body header {
+  padding: 25px;
+}
+
+body header nav {
+  text-align: center;
+}
+
+body header nav a {
+  padding: 10px 20px;
+  border: 2px solid #000;
+}
+

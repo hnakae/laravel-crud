@@ -17,10 +17,10 @@ Route::get('/posts/create', 'PostController@create');
 
 Route::post('/posts', 'PostController@store');
 
-Route::get('/posts/{title}', 'PostController@show');
+Route::get('/posts/{id}', 'PostController@show');
 
-Route::get('/posts/{title}/edit', 'PostController@edit');
+Route::get('/posts/{id}/edit', 'PostController@edit');
 
-Route::put('/posts/{title}', 'PostController@update');
+Route::put('/posts/{id}', 'PostController@update');
 
-Route::delete('/posts/{title}', 'PostController@destroy');
+Route::delete('/posts/{id}', 'PostController@destroy');

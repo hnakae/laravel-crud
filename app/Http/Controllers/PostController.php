@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Post;
+use App\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -14,7 +16,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        return "home page";
+        $posts = Post::all();
+        return view("posts/index", compact("posts"));
     }
 
     /**
@@ -24,7 +27,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        return "create page";
+        $categories = Category::all();
+        return view("posts/create", compact('categories'));
     }
 
     /**
@@ -35,7 +39,18 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        return "store data";
+      $title = $request->title;
+      $content = $request->content;
+      $category_id = $request->category_id;
+
+      $post = Post::create([
+        "title" => $title,
+        "content" => $content,
+        "category_id" => $category_id
+      ]);
+
+
+        return $request->url();
     }
 
     /**
@@ -44,9 +59,11 @@ class PostController extends Controller
      * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $post, $title)
+    public function show(Post $post, $id)
     {
-        return "show {$title} page";
+      $post = Post::where('id', $id)->first();
+
+        return view("posts/show", compact('post'));
     }
 
     /**
@@ -55,9 +72,12 @@ class PostController extends Controller
      * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function edit(Post $post, $title)
+    public function edit(Post $post, $id)
     {
-        return "edit page";
+      $post = Post::where('id', $id)->first();
+      $categories = Category::all();
+
+      return view("posts/edit", compact('post', 'categories'));
     }
 
     /**
@@ -67,9 +87,16 @@ class PostController extends Controller
      * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post, $title)
+    public function update(Request $request, Post $post, $id)
     {
-        return "update single data";
+      Post::where('id', $id)
+          ->update([
+            'title' => $request->title,
+            'content' => $request->content,
+            'category_id' => $request->category_id
+        ]);
+
+      return "update single data";
     }
 
     /**
@@ -78,8 +105,9 @@ class PostController extends Controller
      * @param  \App\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $post, $title)
+    public function destroy(Post $post, $id)
     {
+      Post::destroy($id);
         return "delete data";
     }
 }
